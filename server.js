@@ -25,6 +25,11 @@ app.get("/", async (req, res) => {
   res.render("index", { shorturls: urlLists });
 });
 
+app.post("/shorturls", async (req, res) => {
+  await url_model.create({ full: req.body.fullUrl });
+  res.redirect("/");
+});
+
 app.listen(PORT, () => {
   connectMongoDB(MONGO_URI);
   console.log(`Server is running on PORT ${PORT}`);
