@@ -30,6 +30,16 @@ app.post("/shorturls", async (req, res) => {
   res.redirect("/");
 });
 
+app.get("/:shorturl", async (req, res) => {
+  const shorturl = await url_model.findOne({ short: req.params.shorturl });
+  if (shorturl == null) return res.sendStatus(404);
+
+  shorturl.clicks++;
+  shorturl.save();
+
+  res.redirect(shorturl.full);
+});
+
 app.listen(PORT, () => {
   connectMongoDB(MONGO_URI);
   console.log(`Server is running on PORT ${PORT}`);
